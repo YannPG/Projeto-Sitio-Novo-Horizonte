@@ -24,6 +24,6 @@ public class CafeEntity {
     private TipoCafeEnum tipoCafeEnum;
 
     @ManyToOne
-    @JoinColumn(name = "id_Sitio", nullable = false, updatable = false)
+    @JoinColumn(name = "id_Sitio")
     private SitioEntity sitio;
 }

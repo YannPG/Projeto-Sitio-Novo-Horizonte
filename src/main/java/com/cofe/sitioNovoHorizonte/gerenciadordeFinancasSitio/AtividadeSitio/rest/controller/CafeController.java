@@ -35,5 +35,9 @@ public class CafeController {
         this.cafeService.atualizarCafe(cafeForm, id);
     }
 
-
+    @DeleteMapping(path = "/deletarCafe/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarCafe(@PathVariable Long id){
+        this.cafeService.deletarCafe(id);
+    }
 }

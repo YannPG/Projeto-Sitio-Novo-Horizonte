@@ -51,14 +51,17 @@ public class CafeServiceImpl implements CafeService {
     }
 
     public CafeEntity converterForm(CafeForm cafeForm, Long id) {
-        CafeEntity cafeEntity = new CafeEntity();
-        cafeEntity.setIdCafe(id);
+        CafeEntity cafeEntity = this.cafeRepository.findById(id).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse id não foi encontrado"));
         cafeEntity.setTipoCafeEnum(cafeForm.getTipoCafeEnum());
         cafeEntity.setQuantidade(cafeForm.getQuantidade());
-        cafeEntity.setSitio(this.sitioRepository
-                .findById(cafeForm.getIdSitioCafe())
-                .orElseThrow(()-> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,"Sitio não encontrado!")));
+        cafeEntity.setSitio(this.sitioRepository.findById(cafeForm.getIdSitioCafe()).orElseThrow(()->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado!")));
         return cafeEntity;
+    }
+
+    @Override
+    public void deletarCafe(Long id){
+        this.cafeRepository.deleteById(id);
     }
 }

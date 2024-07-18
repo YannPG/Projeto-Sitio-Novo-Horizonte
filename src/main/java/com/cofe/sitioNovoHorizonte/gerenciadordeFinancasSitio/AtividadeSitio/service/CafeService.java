@@ -11,4 +11,6 @@ public interface CafeService {
     void criarCafe(CafeForm cafeForm);
 
     void atualizarCafe(CafeForm cafeForm, Long id);
+
+    void deletarCafe(Long id);
 }
