@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class TransacaoCafeEntity {
 
     @ManyToOne
-    @JoinColumn(name = "id_Cafe", nullable = false, updatable = false)
+    @JoinColumn(name = "id_Cafe", nullable = false)
     private CafeEntity cafeEntity;
 
     @Id
