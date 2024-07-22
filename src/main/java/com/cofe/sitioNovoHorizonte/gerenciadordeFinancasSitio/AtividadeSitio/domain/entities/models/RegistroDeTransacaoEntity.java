@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -25,13 +24,13 @@ public class RegistroDeTransacaoEntity {
     private Set<PessoaEntity> pessoas;
 
     @ManyToOne
-    @JoinColumn(name = "id_Transacao_Cafe", updatable = false,insertable = false)
+    @JoinColumn(name = "id_Transacao_Cafe")
     private TransacaoCafeEntity transacaoCafe;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRegistro_De_Transacao")
-    private Long idTransicao;
+    private Long idRegistroDeTransacao;
 
     @Column(name = "data_Transacao")
     private LocalDateTime dataTransacao;

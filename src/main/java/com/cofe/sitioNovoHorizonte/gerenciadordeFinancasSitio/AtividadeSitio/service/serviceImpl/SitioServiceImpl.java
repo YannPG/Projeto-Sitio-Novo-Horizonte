@@ -39,7 +39,7 @@ public class SitioServiceImpl implements SitioService {
         sitioCriado.setTipoProdutorEnum(sitioForm.getTipoProdutorEnum());
         sitioCriado.setEnderecoSitioEmbedable(sitioForm.getEnderecoProdutorEmbedable());
 
-       sitioRepository.save(sitioCriado);
+       this.sitioRepository.save(sitioCriado);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class SitioServiceImpl implements SitioService {
         if (idSitio == null) {
             throw new IllegalArgumentException("ID do sitio não pode ser nulo");
         }
-        SitioEntity sitioEncontrado = sitioRepository.findById(idSitio).orElseThrow(() ->
+        SitioEntity sitioEncontrado = this.sitioRepository.findById(idSitio).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Sitio não Encontrado"));
 
         SitioEntity sitioAtualizado = convertSitioFormToEntity(sitioForm, idSitio);
@@ -60,7 +60,7 @@ public class SitioServiceImpl implements SitioService {
         novoSitio.setEnderecoSitioEmbedable(sitioForm.getEnderecoProdutorEmbedable());
         novoSitio.setNomeSitio(sitioForm.getNomeSitio());
         novoSitio.setTipoProdutorEnum(sitioForm.getTipoProdutorEnum());
-        novoSitio.setIdPessoa(pessoaRepository.findById(sitioForm.getIdPessoa()).orElseThrow(()->
+        novoSitio.setIdPessoa(this.pessoaRepository.findById(sitioForm.getIdPessoa()).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada")));
 
         return novoSitio;
@@ -68,7 +68,7 @@ public class SitioServiceImpl implements SitioService {
 
     @Override
     public void deletarSitioPeloId(Long idSitio){
-        SitioEntity sitio = sitioRepository.findById(idSitio).orElseThrow(()->
+        SitioEntity sitio = this.sitioRepository.findById(idSitio).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado"));
         this.sitioRepository.deleteById(idSitio);
     }
