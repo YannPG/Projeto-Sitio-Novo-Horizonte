@@ -1,9 +1,11 @@
 package com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service;
 
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.entities.models.RegistroDeTransacaoEntity;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.RegistroDeTransacaoDTO;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.RegistroDeTransacaoForm;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RegistroDeTransacaoService {
 
@@ -15,5 +17,9 @@ public interface RegistroDeTransacaoService {
 
     void atualizarRegistroDeTransacao(RegistroDeTransacaoForm registroDeTransacaoForm, Long id);
 
-    void encontrarPeloId(Long id);
+    RegistroDeTransacaoDTO buscarTodoRegistroDeTransacao(Long id);
+
+    void deletarRegistroDeTransacaoPeloId(Long idRegistroDeTransacao);
+
+    List<RegistroDeTransacaoDTO> encontrarPrimeiroRegistroDeTransacaoDoMes(String mesSelecionado);
 }

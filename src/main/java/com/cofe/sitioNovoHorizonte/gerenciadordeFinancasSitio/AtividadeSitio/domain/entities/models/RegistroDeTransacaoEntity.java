@@ -34,6 +34,4 @@ public class RegistroDeTransacaoEntity {
 
     @Column(name = "data_Transacao")
     private LocalDateTime dataTransacao;
-
-    private String descricao;
 }

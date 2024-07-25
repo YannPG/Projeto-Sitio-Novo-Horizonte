@@ -16,15 +16,12 @@ public class RegistroDeTransacaoDTO {
 
     private LocalDateTime dataTransacao;
 
-    private String descricao;
-
     private Long idTransacaoCafe;
 
     private Long idRegistroDeTransacao;
 
     public RegistroDeTransacaoDTO(RegistroDeTransacaoEntity registroDeTransacaoEntity){
         this.dataTransacao = registroDeTransacaoEntity.getDataTransacao();
-        this.descricao = registroDeTransacaoEntity.getDescricao();
         this.idTransacaoCafe = registroDeTransacaoEntity.getTransacaoCafe().getIdTransacaoCafe();
         this.idRegistroDeTransacao = registroDeTransacaoEntity.getIdRegistroDeTransacao();
     }
@@ -35,5 +32,7 @@ public class RegistroDeTransacaoDTO {
                 .map(RegistroDeTransacaoDTO::new)
                 .collect(Collectors.toList());
     }
-
+    public static RegistroDeTransacaoDTO converterDTO(RegistroDeTransacaoEntity registroDeTransacaoEntity) {
+        return new RegistroDeTransacaoDTO(registroDeTransacaoEntity);
+    }
 }

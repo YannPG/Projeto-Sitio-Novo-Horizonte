@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -20,6 +22,8 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     public final RegistroDeTransacaoRepository registroDeTransacaoRepository;
     public final TransacaoCafeRepository transacaoCafeRepository;
 
+
+    //GET do CRUD
     @Override
     public List<RegistroDeTransacaoDTO> buscarTodoRegistroDeTransacao() {
         List<RegistroDeTransacaoEntity> listRegistroDeTransacao = this.registroDeTransacaoRepository.findAll();
@@ -28,16 +32,17 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
         return RegistroDeTransacaoDTO.converter(listRegistroDeTransacao);
     }
 
+    //POST do CRUD
     @Override
     public void criarRegistroDeTransacao(RegistroDeTransacaoForm registroDeTransacaoForm) {
         RegistroDeTransacaoEntity registroDeTransacaoCriado = new RegistroDeTransacaoEntity();
         registroDeTransacaoCriado.setDataTransacao(registroDeTransacaoForm.getDataTransacao());
-        registroDeTransacaoCriado.setDescricao(registroDeTransacaoForm.getDescricao());
         registroDeTransacaoCriado.setTransacaoCafe( this.transacaoCafeRepository.findById(registroDeTransacaoForm.getIdTransacaoCafe())
                 .orElseThrow(() -> new IllegalArgumentException("Transação de café não encontrada para o ID fornecido.")));
         this.registroDeTransacaoRepository.save(registroDeTransacaoCriado);
     }
 
+    //PUT do CRUD
     @Override
     public void atualizarRegistroDeTransacao(RegistroDeTransacaoForm registroDeTransacaoForm, Long id) {
         RegistroDeTransacaoEntity registroDeTransacaoEncontrado = this.registroDeTransacaoRepository.findById(id)
@@ -48,23 +53,50 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
         this.registroDeTransacaoRepository.save(registroDeTransacaoAtualizado);
     }
 
-    @Override
-    public void encontrarPeloId(Long id) {
-
-    }
-
     public RegistroDeTransacaoEntity convertSitioForm(RegistroDeTransacaoForm registroDeTransacaoForm, Long id) {
         RegistroDeTransacaoEntity novoRegistroDeTransacao = new RegistroDeTransacaoEntity();
         novoRegistroDeTransacao.setIdRegistroDeTransacao(id);
         novoRegistroDeTransacao.setTransacaoCafe(this.transacaoCafeRepository.findById(registroDeTransacaoForm.getIdTransacaoCafe())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Não foi encontrado ID com este valor")));
-        novoRegistroDeTransacao.setDescricao(registroDeTransacaoForm.getDescricao());
         novoRegistroDeTransacao.setDataTransacao(registroDeTransacaoForm.getDataTransacao());
         return novoRegistroDeTransacao;
     }
 
+    //DELEAT do CRUD
     @Override
     public void deletarRegistroDeTransacao(Long id) {
         this.registroDeTransacaoRepository.deleteById(id);
+    }
+
+    //FindById
+    @Override
+    public RegistroDeTransacaoDTO buscarTodoRegistroDeTransacao(Long id) {
+        RegistroDeTransacaoEntity registroDeTransacaoEncontradoPeloId = this.registroDeTransacaoRepository
+                .findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Não foi encontrado registro com este ID"));
+        return RegistroDeTransacaoDTO.converterDTO(registroDeTransacaoEncontradoPeloId);
+    }
+
+    //deletById
+    @Override
+    public void deletarRegistroDeTransacaoPeloId(Long idRegistroDeTransacao) {
+        this.registroDeTransacaoRepository.deleteById(idRegistroDeTransacao);
+    }
+
+
+
+    //FindFirstBy
+    @Override
+    public List<RegistroDeTransacaoDTO> encontrarPrimeiroRegistroDeTransacaoDoMes(String mesSelecionado) {
+        YearMonth yearMonth = YearMonth.parse(mesSelecionado);
+        LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime end = yearMonth.atEndOfMonth().atTime(23,59,59);
+
+        List<RegistroDeTransacaoEntity> registroDeTransacaoEncontrado = this.registroDeTransacaoRepository
+                .findFirstByDataTransacaoBetweenOrderByDataTransacaoAsc(start, end);
+        if(registroDeTransacaoEncontrado.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Não foi encontrado nenhum registro neste mes");
+        return RegistroDeTransacaoDTO.converter(registroDeTransacaoEncontrado);
     }
 }

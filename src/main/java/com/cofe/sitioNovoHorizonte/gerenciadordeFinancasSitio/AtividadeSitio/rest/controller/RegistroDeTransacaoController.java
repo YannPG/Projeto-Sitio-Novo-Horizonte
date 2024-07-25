@@ -1,14 +1,17 @@
 package com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.controller;
 
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.entities.models.RegistroDeTransacaoEntity;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.RegistroDeTransacaoDTO;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.RegistroDeTransacaoForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.RegistroDeTransacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,8 +49,22 @@ public class RegistroDeTransacaoController {
 
     //findById
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path ="/econtrarPeloId/{id}")
-    public void encontrarPeloId(@PathVariable Long id) {
-        this.registroDeTransacaoService.encontrarPeloId(id);
+    @GetMapping(path ="/encontrarRegistroDeTransacaoPeloId/{id}")
+    public ResponseEntity<RegistroDeTransacaoDTO> listaRegistroDeTransacao(@PathVariable Long id) {
+        RegistroDeTransacaoDTO registroDeTransacaoDTO = this.registroDeTransacaoService.buscarTodoRegistroDeTransacao(id);
+        return ResponseEntity.ok(registroDeTransacaoDTO);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(path = "/deletarRegistroDeTransacaoPeloId/{idRegistroDeTransacao}")
+    public void deletarRegistroDeTransacaoPeloId(@PathVariable Long idRegistroDeTransacao) {
+        this.registroDeTransacaoService.deletarRegistroDeTransacaoPeloId(idRegistroDeTransacao);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPrimeiroRegistroDeTransacaoDoMes")
+    public List<RegistroDeTransacaoDTO> encontrarPrimeiroRegistroDeTransacaoDoMes(@RequestParam String mesSelecionado) {
+        return this.registroDeTransacaoService.encontrarPrimeiroRegistroDeTransacaoDoMes(mesSelecionado);
     }
 }
+
