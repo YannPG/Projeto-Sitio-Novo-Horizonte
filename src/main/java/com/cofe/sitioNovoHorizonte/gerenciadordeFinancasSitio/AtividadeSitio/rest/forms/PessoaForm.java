@@ -13,4 +13,6 @@ public class PessoaForm {
 
     private String email;
 
+    private String dataNascimento;
+
 }

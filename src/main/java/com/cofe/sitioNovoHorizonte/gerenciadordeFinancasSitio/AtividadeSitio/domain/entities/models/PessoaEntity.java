@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,5 +27,8 @@ public class PessoaEntity {
     private String nome;
 
     private String email;
+
+    @Column(name = "data_Nascimento")
+    private LocalDate dataNascimento;
 
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -41,4 +42,38 @@ public class PessoaController {
     public void deletarPessoa(@PathVariable Long id){
         this.pessoaService.deletarPessoa(id);
     }
+
+    //FindByOrderAsc9
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPessoaPorOrdemAlfabtica")
+    public List<PessoaDTO> encontrarPessoaPorOrdemAlfabetica(){
+        return this.pessoaService.encontrarPessoaPorOrdemAlfabetica();
+    }
+    //FindByOrderDec6
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPessoaPorOrdemDecrescente")
+    public List<PessoaDTO> encontrarPessoaPorOrdemDecrescente(){
+        return this.pessoaService.encontrarPessoaPorOrdemDecrescente();
+    }
+
+    //FindByCpf1
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPessoaPorCpf/{cpf}")
+    public List<PessoaDTO> encontrarPessoaPorCpf(@PathVariable Long cpf){
+        return this.pessoaService.econtrarPessoaPorCpf(cpf);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPessoaPorDataNascimento")
+    public List<PessoaDTO> encontrarPessoaPorDataNascimento(@RequestParam List<LocalDate> dataNascimento){
+        return this.pessoaService.encontrarPessoaPorDataDeNascimento(dataNascimento);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPessoaEntreDatas")
+    public List<PessoaDTO> encontrarPessoaEntreDatas(@RequestParam LocalDate dataInicial,
+                                                     @RequestParam LocalDate dataFinal){
+       return this.pessoaService.encontrarPessoaEntreDatas(dataInicial, dataFinal);
+    }
+
 }
