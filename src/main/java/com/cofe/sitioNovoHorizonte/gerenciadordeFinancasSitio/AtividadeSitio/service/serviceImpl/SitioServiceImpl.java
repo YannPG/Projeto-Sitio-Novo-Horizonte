@@ -72,4 +72,13 @@ public class SitioServiceImpl implements SitioService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado"));
         this.sitioRepository.deleteById(idSitio);
     }
+
+    //FindByOr
+    @Override
+    public List<SitioDTO> encontrarPorNomeSitioOuIdSitio(String nome, Long idSitio) {
+        List<SitioEntity> listSitioNomeOuPessoa = this.sitioRepository.findByNomeSitioOrIdSitio(nome, idSitio);
+        if(listSitioNomeOuPessoa.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Não foram encontrado dados com estes parametros");
+        return SitioDTO.converter(listSitioNomeOuPessoa);
+    }
 }

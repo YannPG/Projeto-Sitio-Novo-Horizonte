@@ -43,4 +43,12 @@ public class SitioController {
     public void deletarSitio(@PathVariable Long idSitio){
         this.sitioService.deletarSitioPeloId(idSitio);
     }
+
+    //FindByOr
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontrarPorNomeOuId")
+    public List<SitioDTO> encontrarPorNomeSitioOuIdSitio(@RequestParam(required = false) String nome,
+                                                         @RequestParam(required = false) Long idSitio){
+        return this.sitioService.encontrarPorNomeSitioOuIdSitio(nome, idSitio);
+    }
 }

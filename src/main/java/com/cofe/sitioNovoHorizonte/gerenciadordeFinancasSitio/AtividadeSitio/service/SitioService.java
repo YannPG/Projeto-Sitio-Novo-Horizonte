@@ -14,4 +14,6 @@ public interface SitioService {
     void atualizarSitio(SitioForm sitioForm, Long idSitio);
 
     void deletarSitioPeloId(Long idSitio);
+
+    List<SitioDTO> encontrarPorNomeSitioOuIdSitio(String nomeSitio, Long idSitio);
 }
