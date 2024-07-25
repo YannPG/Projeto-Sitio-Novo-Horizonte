@@ -13,7 +13,9 @@ import lombok.Getter;
 public enum TipoCafeEnum implements ValorEnum<String> {
 
     MUNDONOVO("MN", "Mundo Novo"),
-    BOURBON("BB", "Bourbon"),;
+    BOURBON("BB", "Bourbon"),
+    LAURINA("LR", "Laurina"),
+    ICATU("IC", "Icatu"),;
 
     private String valor;
     private String descricao;
