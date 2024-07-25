@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,4 +43,29 @@ public class TransacaoCafeController {
     public void deletarTransacaoCafe(@PathVariable Long id){
         this.transacaoCafeService.deletarTransacaoCafe(id);
     }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontraTransacaoComValorMenor")
+    public List<TransacaoCafeDTO> encontraTransacaoComValorMenor(@RequestParam BigDecimal valor){
+        return this.transacaoCafeService.encontrarTransacaoComValorMenor(valor);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontraTransacaoComValorMenorIgual")
+    public List<TransacaoCafeDTO> encontraTransacaoComValorMenorIgual(@RequestParam BigDecimal valor){
+        return this.transacaoCafeService.encontrarTransacaoComValorMenorIgual(valor);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontraTransacaoComValorMaior")
+    public List<TransacaoCafeDTO> encontraTransacaoComValorMaior(@RequestParam BigDecimal valor){
+        return this.transacaoCafeService.encontrarTransacaoComValorMaior(valor);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/encontraTransacaoComValorMaiorIgual")
+    public List<TransacaoCafeDTO> encontraTransacaoComValorMaiorIgual(@RequestParam BigDecimal valor){
+        return this.transacaoCafeService.encontrarTransacaoComValorMaiorIgual(valor);
+    }
+
 }

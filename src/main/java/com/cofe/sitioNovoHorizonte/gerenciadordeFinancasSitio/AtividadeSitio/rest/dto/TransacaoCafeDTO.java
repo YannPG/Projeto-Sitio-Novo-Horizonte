@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -38,5 +39,9 @@ public class TransacaoCafeDTO {
                 .stream()
                 .map(TransacaoCafeDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public static Optional<TransacaoCafeDTO> converterOptional (Optional<TransacaoCafeEntity> optional){
+        return optional.map(TransacaoCafeDTO::new);
     }
 }
