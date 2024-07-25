@@ -4,6 +4,7 @@ import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.dom
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.CafeRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.TransacaoCafeRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.TransacaoCafeDTO;
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.exception.ResourceNotFoundException;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.TransacaoCafeForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.TransacaoCafeService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     public List<TransacaoCafeDTO> buscarTodaTransacaoCafe() {
             List<TransacaoCafeEntity> listaTransacaoCafe = this.transacaoCafeRepository.findAll();
             if(listaTransacaoCafe.isEmpty()) throw
-                    new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontrados transações");
+                    new ResourceNotFoundException("Não foram encontrados transações");
             return TransacaoCafeDTO.converter(listaTransacaoCafe);
     }
 
@@ -44,8 +45,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     @Override
     public void atualizarTransicaoCafe(TransacaoCafeForm transacaoCafeForm, Long id) {
         Optional<TransacaoCafeEntity> transacaoCafeEncontrado = this.transacaoCafeRepository.findById(id);
-        if(transacaoCafeEncontrado.isEmpty()) throw new  ResponseStatusException(HttpStatus.NOT_FOUND
-                , "Não foi encontrado nenhuma transacao com este id");
+        if(transacaoCafeEncontrado.isEmpty()) throw new ResourceNotFoundException("Não foi encontrado nenhuma transacao com este id");
         this.transacaoCafeRepository.save(converterForm(transacaoCafeForm, id));
     }
 
@@ -70,8 +70,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     public List<TransacaoCafeDTO> encontrarTransacaoComValorMenor(BigDecimal valor) {
         List<TransacaoCafeEntity> transacaoCafeEncontrado = this.transacaoCafeRepository
                 .findByValorDaTransacaoCafeLessThan(valor);
-        if(transacaoCafeEncontrado.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "não foi encontrado transacoes com este valor");
+        if(transacaoCafeEncontrado.isEmpty()) throw new ResourceNotFoundException("não foi encontrado transacoes com este valor");
         return TransacaoCafeDTO.converter(transacaoCafeEncontrado);
     }
 
@@ -79,8 +78,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     public List<TransacaoCafeDTO> encontrarTransacaoComValorMenorIgual(BigDecimal valor) {
         List<TransacaoCafeEntity> transacaoCafeEncontrado = this.transacaoCafeRepository
                 .findByValorDaTransacaoCafeLessThanEqual(valor);
-        if(transacaoCafeEncontrado.isEmpty()) throw  new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "não foi encontrado transacoes com este valor");
+        if(transacaoCafeEncontrado.isEmpty()) throw  new ResourceNotFoundException("não foi encontrado transacoes com este valor");
         return TransacaoCafeDTO.converter(transacaoCafeEncontrado);
     }
 
@@ -88,8 +86,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     public List<TransacaoCafeDTO> encontrarTransacaoComValorMaior(BigDecimal valor) {
         List<TransacaoCafeEntity> transacaoCafeEncontrado = this.transacaoCafeRepository
                 .findByValorDaTransacaoCafeGreaterThan(valor);
-        if(transacaoCafeEncontrado.isEmpty()) throw  new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "não foi encontrado transacoes com este valor");
+        if(transacaoCafeEncontrado.isEmpty()) throw  new ResourceNotFoundException("não foi encontrado transacoes com este valor");
         return TransacaoCafeDTO.converter(transacaoCafeEncontrado);
     }
 
@@ -97,8 +94,7 @@ public class TransacaoCafeServiceImpl implements TransacaoCafeService {
     public List<TransacaoCafeDTO> encontrarTransacaoComValorMaiorIgual(BigDecimal valor) {
         List<TransacaoCafeEntity> transacaoCafeEncontrado = this.transacaoCafeRepository
                 .findByValorDaTransacaoCafeGreaterThanEqual(valor);
-        if(transacaoCafeEncontrado.isEmpty()) throw  new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "não foi encontrado transacoes com este valor");
+        if(transacaoCafeEncontrado.isEmpty()) throw  new ResourceNotFoundException("não foi encontrado transacoes com este valor");
         return TransacaoCafeDTO.converter(transacaoCafeEncontrado);
     }
 }

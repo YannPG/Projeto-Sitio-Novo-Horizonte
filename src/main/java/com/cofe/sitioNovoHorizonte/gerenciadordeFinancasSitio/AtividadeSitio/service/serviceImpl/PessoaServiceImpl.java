@@ -4,6 +4,7 @@ import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.dom
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.PessoaRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.SitioRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.PessoaDTO;
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.exception.ResourceNotFoundException;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.PessoaForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.PessoaService;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,7 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public List<PessoaDTO> buscarTodaPessoa() {
         List<PessoaEntity> listaDePessoa = this.pessoaRepository.findAll();
-        if (listaDePessoa.isEmpty()) throw  new ResponseStatusException(
-                HttpStatus.NOT_FOUND,"Lista de pessoa está vazia");
+        if (listaDePessoa.isEmpty()) throw  new ResourceNotFoundException("Lista de pessoa está vazia");
         return PessoaDTO.converter(listaDePessoa);
     }
 
@@ -44,7 +44,7 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public void atualizarPessoa(PessoaForm pessoaForm, Long id) {
         Optional<PessoaEntity> pessoaEncontrada = this.pessoaRepository.findById(id);
-        if (pessoaEncontrada.isEmpty()) throw new RuntimeException("Essa pessoa não existe");
+        if (pessoaEncontrada.isEmpty()) throw new ResourceNotFoundException("Essa pessoa não existe");
         this.pessoaRepository.save(converterForm(pessoaForm,id));
     }
 
@@ -67,8 +67,7 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public List<PessoaDTO> encontrarPessoaPorOrdemAlfabetica() {
         List<PessoaEntity> listTodaPessoa = this.pessoaRepository.findAllByOrderByNomeAsc();
-        if(listTodaPessoa.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND
-                ,"lista de pessoas está vazia");
+        if(listTodaPessoa.isEmpty()) throw new ResourceNotFoundException("lista de pessoas está vazia");
         return PessoaDTO.converter(listTodaPessoa);
     }
 
@@ -76,8 +75,7 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public List<PessoaDTO> encontrarPessoaPorOrdemDecrescente() {
         List<PessoaEntity> listTodaPessoaDesc = this.pessoaRepository.findAllByOrderByNomeDesc();
-        if(listTodaPessoaDesc.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND
-                ,"Lista de pessoas está vazia");
+        if(listTodaPessoaDesc.isEmpty()) throw new ResourceNotFoundException("Lista de pessoas está vazia");
         return PessoaDTO.converter(listTodaPessoaDesc);
     }
 
@@ -85,8 +83,7 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public List<PessoaDTO> econtrarPessoaPorCpf(Long cpf) {
         List<PessoaEntity> listaPessoaPorCpf = this.pessoaRepository.findByCpf(cpf);
-        if(listaPessoaPorCpf.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND
-                ,"Não há pessoas com este Cpf");
+        if(listaPessoaPorCpf.isEmpty())throw new ResourceNotFoundException("Não há pessoas com este Cpf");
         return PessoaDTO.converter(listaPessoaPorCpf);
     }
 
@@ -95,8 +92,7 @@ public class PessoaServiceImpl implements PessoaService {
     public List<PessoaDTO> encontrarPessoaPorDataDeNascimento(List<LocalDate> dataNascimento) {
         List<PessoaEntity> pessoaEncontradaPorDataNascimento = this.pessoaRepository
                 .findByDataNascimentoIn(dataNascimento);
-        if(pessoaEncontradaPorDataNascimento.isEmpty()) throw new ResponseStatusException(HttpStatus
-                .NOT_FOUND, "Não foi encontrada pessoa com está data de nascimento");
+        if(pessoaEncontradaPorDataNascimento.isEmpty()) throw new ResourceNotFoundException("Não foi encontrada pessoa com está data de nascimento");
         return PessoaDTO.converter(pessoaEncontradaPorDataNascimento);
     }
 
@@ -105,8 +101,7 @@ public class PessoaServiceImpl implements PessoaService {
     public List<PessoaDTO> encontrarPessoaEntreDatas(LocalDate dataInicial, LocalDate dataFinal) {
         List<PessoaEntity> pessoaEncontradaEntreDatas = this.pessoaRepository
                 .findByDataNascimentoBetween(dataInicial, dataFinal);
-        if(pessoaEncontradaEntreDatas.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Não foram encontradas pessoas entre as datas solicitadas");
+        if(pessoaEncontradaEntreDatas.isEmpty()) throw new ResourceNotFoundException("Não foram encontradas pessoas entre as datas solicitadas");
         return PessoaDTO.converter(pessoaEncontradaEntreDatas);
     }
 

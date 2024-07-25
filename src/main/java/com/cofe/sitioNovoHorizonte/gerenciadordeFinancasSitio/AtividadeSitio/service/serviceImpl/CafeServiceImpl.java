@@ -5,6 +5,7 @@ import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.dom
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.CafeRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.SitioRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.CafeDTO.CafeDTO;
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.exception.ResourceNotFoundException;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.CafeForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.CafeService;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,7 @@ public class CafeServiceImpl implements CafeService {
     @Override
     public List<CafeDTO> buscarTodoCafe() {
         List<CafeEntity> listaDeCafe = this.cafeRepository.findAll();
-        if(listaDeCafe.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Não foi econtrado nenhum café");
+        if(listaDeCafe.isEmpty())throw new ResourceNotFoundException("Não foi econtrado nenhum café");
         return CafeDTO.converter(listaDeCafe);
     }
 
@@ -37,24 +37,23 @@ public class CafeServiceImpl implements CafeService {
         cafeCriado.setTipoCafeEnum(cafeForm.getTipoCafeEnum());
         cafeCriado.setSitio(this.sitioRepository
                 .findById(cafeForm.getIdSitioCafe())
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Sitio não encontrado")));
+                .orElseThrow(()->new ResourceNotFoundException("Sitio não encontrado")));
         this.cafeRepository.save(cafeCriado);
     }
 
     @Override
     public void atualizarCafe(CafeForm cafeForm, Long id) {
         Optional<CafeEntity> cafeEncontrado = this.cafeRepository.findById(id);
-        if(cafeEncontrado.isEmpty()) throw new RuntimeException("Esse cafe não existe");
+        if(cafeEncontrado.isEmpty()) throw new ResourceNotFoundException("Esse cafe não existe");
         this.cafeRepository.save(converterForm(cafeForm, id));
     }
 
     public CafeEntity converterForm(CafeForm cafeForm, Long id) {
         CafeEntity cafeEntity = this.cafeRepository.findById(id).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse id não foi encontrado"));
+                new ResourceNotFoundException( "Esse id não foi encontrado"));
         cafeEntity.setTipoCafeEnum(cafeForm.getTipoCafeEnum());
         cafeEntity.setSitio(this.sitioRepository.findById(cafeForm.getIdSitioCafe()).orElseThrow(()->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado!")));
+                        new ResourceNotFoundException("Sitio não encontrado!")));
         return cafeEntity;
     }
 

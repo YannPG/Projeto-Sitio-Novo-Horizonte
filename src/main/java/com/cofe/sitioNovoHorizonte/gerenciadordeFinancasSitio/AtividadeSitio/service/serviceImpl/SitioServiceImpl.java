@@ -4,6 +4,7 @@ import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.dom
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.PessoaRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.SitioRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.SitioDTO;
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.exception.ResourceNotFoundException;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.SitioForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.SitioService;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,7 @@ public class SitioServiceImpl implements SitioService {
     @Override
     public List<SitioDTO> buscarTodoSitio() {
         List<SitioEntity> listSitioEntity = this.sitioRepository.findAll();
-        if(listSitioEntity.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND
-                ,"Não foi encontrado um Sitio" );
+        if(listSitioEntity.isEmpty()) throw new ResourceNotFoundException("Não foi encontrado um Sitio" );
         return SitioDTO.converter(listSitioEntity);
     }
 
@@ -34,7 +34,7 @@ public class SitioServiceImpl implements SitioService {
         SitioEntity sitioCriado = new SitioEntity();
 
         sitioCriado.setIdPessoa(this.pessoaRepository.findById(sitioForm.getIdPessoa())
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada")));
+                .orElseThrow(()->new ResourceNotFoundException("Pessoa não encontrada")));
         sitioCriado.setNomeSitio(sitioForm.getNomeSitio());
         sitioCriado.setTipoProdutorEnum(sitioForm.getTipoProdutorEnum());
         sitioCriado.setEnderecoSitioEmbedable(sitioForm.getEnderecoProdutorEmbedable());
@@ -48,7 +48,7 @@ public class SitioServiceImpl implements SitioService {
             throw new IllegalArgumentException("ID do sitio não pode ser nulo");
         }
         SitioEntity sitioEncontrado = this.sitioRepository.findById(idSitio).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Sitio não Encontrado"));
+                new ResourceNotFoundException("Sitio não Encontrado"));
 
         SitioEntity sitioAtualizado = convertSitioFormToEntity(sitioForm, idSitio);
         this.sitioRepository.save(sitioAtualizado);
@@ -69,7 +69,7 @@ public class SitioServiceImpl implements SitioService {
     @Override
     public void deletarSitioPeloId(Long idSitio){
         SitioEntity sitio = this.sitioRepository.findById(idSitio).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado"));
+                new ResourceNotFoundException("Sitio não encontrado"));
         this.sitioRepository.deleteById(idSitio);
     }
 
@@ -77,8 +77,7 @@ public class SitioServiceImpl implements SitioService {
     @Override
     public List<SitioDTO> encontrarPorNomeSitioOuIdSitio(String nome, Long idSitio) {
         List<SitioEntity> listSitioNomeOuPessoa = this.sitioRepository.findByNomeSitioOrIdSitio(nome, idSitio);
-        if(listSitioNomeOuPessoa.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Não foram encontrado dados com estes parametros");
+        if(listSitioNomeOuPessoa.isEmpty())throw new ResourceNotFoundException("Não foram encontrado dados com estes parametros");
         return SitioDTO.converter(listSitioNomeOuPessoa);
     }
 }

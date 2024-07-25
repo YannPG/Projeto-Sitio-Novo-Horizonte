@@ -4,6 +4,7 @@ import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.dom
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.RegistroDeTransacaoRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.TransacaoCafeRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.RegistroDeTransacaoDTO;
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.exception.ResourceNotFoundException;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.RegistroDeTransacaoForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.RegistroDeTransacaoService;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     @Override
     public List<RegistroDeTransacaoDTO> buscarTodoRegistroDeTransacao() {
         List<RegistroDeTransacaoEntity> listRegistroDeTransacao = this.registroDeTransacaoRepository.findAll();
-        if (listRegistroDeTransacao.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Não foram encontrados registros de transacao");
+        if (listRegistroDeTransacao.isEmpty()) throw new ResourceNotFoundException("Não foram encontrados registros de transacao");
         return RegistroDeTransacaoDTO.converter(listRegistroDeTransacao);
     }
 
@@ -46,8 +46,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     @Override
     public void atualizarRegistroDeTransacao(RegistroDeTransacaoForm registroDeTransacaoForm, Long id) {
         RegistroDeTransacaoEntity registroDeTransacaoEncontrado = this.registroDeTransacaoRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Não foi encontrado nenhum registro neste id"));
+                .orElseThrow(()-> new ResourceNotFoundException("Não foi encontrado nenhum registro neste id"));
 
         RegistroDeTransacaoEntity registroDeTransacaoAtualizado = convertSitioForm(registroDeTransacaoForm, id);
         this.registroDeTransacaoRepository.save(registroDeTransacaoAtualizado);
@@ -57,7 +56,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
         RegistroDeTransacaoEntity novoRegistroDeTransacao = new RegistroDeTransacaoEntity();
         novoRegistroDeTransacao.setIdRegistroDeTransacao(id);
         novoRegistroDeTransacao.setTransacaoCafe(this.transacaoCafeRepository.findById(registroDeTransacaoForm.getIdTransacaoCafe())
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Não foi encontrado ID com este valor")));
+                .orElseThrow(()-> new ResourceNotFoundException("Não foi encontrado ID com este valor")));
         novoRegistroDeTransacao.setDataTransacao(registroDeTransacaoForm.getDataTransacao());
         return novoRegistroDeTransacao;
     }
@@ -65,6 +64,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     //DELEAT do CRUD
     @Override
     public void deletarRegistroDeTransacao(Long id) {
+        if(id == null ) throw new ResourceNotFoundException("Não foi encontrado nenhum registro com este ID");
         this.registroDeTransacaoRepository.deleteById(id);
     }
 
@@ -73,14 +73,14 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     public RegistroDeTransacaoDTO buscarTodoRegistroDeTransacao(Long id) {
         RegistroDeTransacaoEntity registroDeTransacaoEncontradoPeloId = this.registroDeTransacaoRepository
                 .findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Não foi encontrado registro com este ID"));
+                .orElseThrow(()-> new ResourceNotFoundException("Não foi encontrado registro com este ID"));
         return RegistroDeTransacaoDTO.converterDTO(registroDeTransacaoEncontradoPeloId);
     }
 
     //deletById
     @Override
     public void deletarRegistroDeTransacaoPeloId(Long idRegistroDeTransacao) {
+        if(idRegistroDeTransacao == null)throw new ResourceNotFoundException("Não há Registro com este ID");
         this.registroDeTransacaoRepository.deleteById(idRegistroDeTransacao);
     }
 
@@ -95,8 +95,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
 
         List<RegistroDeTransacaoEntity> registroDeTransacaoEncontrado = this.registroDeTransacaoRepository
                 .findFirstByDataTransacaoBetweenOrderByDataTransacaoAsc(start, end);
-        if(registroDeTransacaoEncontrado.isEmpty())throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Não foi encontrado nenhum registro neste mes");
+        if(registroDeTransacaoEncontrado.isEmpty())throw new ResourceNotFoundException("Não foi encontrado nenhum registro neste mes");
         return RegistroDeTransacaoDTO.converter(registroDeTransacaoEncontrado);
     }
 }
