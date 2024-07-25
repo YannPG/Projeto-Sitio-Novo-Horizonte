@@ -10,9 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface RegistroDeTransacaoRepository extends JpaRepository<RegistroDeTransacaoEntity, Long> {
-    void deleteById(Long idRegistroDeTransacao);
+    void deleteByIdRegistroDeTransacao(Long idRegistroDeTransacao);
 
     List<RegistroDeTransacaoEntity> findFirstByDataTransacaoBetweenOrderByDataTransacaoAsc(LocalDateTime start, LocalDateTime end);
-
 
 }

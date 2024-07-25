@@ -81,7 +81,7 @@ public class RegistroDeTransacaoServiceImpl implements RegistroDeTransacaoServic
     @Override
     public void deletarRegistroDeTransacaoPeloId(Long idRegistroDeTransacao) {
         if(idRegistroDeTransacao == null)throw new ResourceNotFoundException("Não há Registro com este ID");
-        this.registroDeTransacaoRepository.deleteById(idRegistroDeTransacao);
+        this.registroDeTransacaoRepository.deleteByIdRegistroDeTransacao(idRegistroDeTransacao);
     }
 
 
