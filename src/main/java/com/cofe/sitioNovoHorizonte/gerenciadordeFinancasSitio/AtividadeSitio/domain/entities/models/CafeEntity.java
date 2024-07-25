@@ -18,8 +18,6 @@ public class CafeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCafe;
 
-    private Long quantidade;
-
     @Column(name = "Tipo_De_Cafe")
     private TipoCafeEnum tipoCafeEnum;
 

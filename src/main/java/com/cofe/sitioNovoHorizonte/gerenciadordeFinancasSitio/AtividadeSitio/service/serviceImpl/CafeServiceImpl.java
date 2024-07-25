@@ -1,5 +1,6 @@
 package com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.serviceImpl;
 
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.entities.enums.TipoCafeEnum;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.entities.models.CafeEntity;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.CafeRepository;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.repository.SitioRepository;
@@ -34,7 +35,6 @@ public class CafeServiceImpl implements CafeService {
         CafeEntity cafeCriado = new CafeEntity();
 
         cafeCriado.setTipoCafeEnum(cafeForm.getTipoCafeEnum());
-        cafeCriado.setQuantidade(cafeForm.getQuantidade());
         cafeCriado.setSitio(this.sitioRepository
                 .findById(cafeForm.getIdSitioCafe())
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -53,7 +53,6 @@ public class CafeServiceImpl implements CafeService {
         CafeEntity cafeEntity = this.cafeRepository.findById(id).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse id não foi encontrado"));
         cafeEntity.setTipoCafeEnum(cafeForm.getTipoCafeEnum());
-        cafeEntity.setQuantidade(cafeForm.getQuantidade());
         cafeEntity.setSitio(this.sitioRepository.findById(cafeForm.getIdSitioCafe()).orElseThrow(()->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,"Sitio não encontrado!")));
         return cafeEntity;
@@ -62,5 +61,12 @@ public class CafeServiceImpl implements CafeService {
     @Override
     public void deletarCafe(Long id){
         this.cafeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CafeDTO> encontrarPorIdSitioEtipoCafe(Long idSitio, TipoCafeEnum idTipoCafe) {
+        List<CafeEntity> listDeIdSitioIdTipoCafe = this.cafeRepository
+                .findBySitio_IdSitioAndTipoCafeEnum(idSitio, idTipoCafe);
+        return CafeDTO.converter(listDeIdSitioIdTipoCafe);
     }
 }

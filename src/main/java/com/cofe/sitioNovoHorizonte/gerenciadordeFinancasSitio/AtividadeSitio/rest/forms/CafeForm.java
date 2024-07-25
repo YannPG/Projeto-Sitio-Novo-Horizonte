@@ -7,9 +7,7 @@ import lombok.Getter;
 @Getter
 public class CafeForm {
 
-    @NotNull(message = "Este campo não pode ser Nulo")
-    private Long quantidade;
-
+    @NotNull(message = "Este campo não pode ser nulo")
     private TipoCafeEnum tipoCafeEnum;
 
     private Long idSitioCafe;

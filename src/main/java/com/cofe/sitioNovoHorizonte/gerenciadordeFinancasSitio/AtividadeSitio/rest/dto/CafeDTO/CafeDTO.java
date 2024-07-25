@@ -17,15 +17,12 @@ public class CafeDTO {
 
     public Long idCafe;
 
-    public Long quantidade;
-
     public TipoCafeEnum tipoCafeEnum;
 
     private SitioCafeDTO sitioDTO;
 
     public CafeDTO(CafeEntity cafeEntity){
         this.idCafe = cafeEntity.getIdCafe();
-        this.quantidade = cafeEntity.getQuantidade();
         this.tipoCafeEnum = cafeEntity.getTipoCafeEnum();
         this.sitioDTO = new SitioCafeDTO(cafeEntity.getSitio());
     }

@@ -1,5 +1,6 @@
 package com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.controller;
 
+import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.domain.entities.enums.TipoCafeEnum;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.dto.CafeDTO.CafeDTO;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.rest.forms.CafeForm;
 import com.cofe.sitioNovoHorizonte.gerenciadordeFinancasSitio.AtividadeSitio.service.CafeService;
@@ -39,5 +40,13 @@ public class CafeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarCafe(@PathVariable Long id){
         this.cafeService.deletarCafe(id);
+    }
+
+    //FindByAnd
+    @GetMapping(path = "/encontrarPorIdSitioEtipoCafe")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<CafeDTO> encontrarPorIdSitioEtipoCafe(@RequestParam(required = false) Long idSitio,
+                                                      @RequestParam(required = false) TipoCafeEnum idTipoCafe){
+        return this.cafeService.encontrarPorIdSitioEtipoCafe(idSitio, idTipoCafe);
     }
 }
