@@ -1,13 +1,22 @@
 alter table public.Pessoa alter Column id INT auto_increment;
 
-insert into public.Pessoa (cpf, email, nome, data_Nascimento) values
-                        (42576980805, 'yannpereira@hotmail.com', 'Yann Pereira Garcia','2002-05-21'),
-                        (12345678912, 'samueldasilva@hotmail.com', 'Samuel da Silva','2003-09-19'),
-                        (98765432198, 'josecorreiapinto@hotmail.com', 'Jose Correia','2004-02-7'),
-                        (65498732178, 'xayeniSilva@hotmail.com', 'Xayeni da Silva', '2005-04-02'),
-                        (95184762384, 'adanastorRosa@hotmail.com', 'Adanastor Edmar de Rosa','2006-08-29'),
-                        (26489517384, 'anaBananaSilva@hotmail.com', 'Ana Banana Silva','2007-001-01');
+insert into public.email (email, data_Cadastro) values
+      ('yannpereira@hotmail.com', '2024-12-23 23:50:00'),
+      ('samueldasilva@hotmail.com','2024-02-23 13:50:00'),
+      ('josecorreiapinto@hotmail.com','2024-02-23 13:50:00'),
+      ('xayeniSilva@hotmail.com','2024-02-23 13:50:00'),
+      ('adanastorRosa@hotmail.com','2024-02-23 13:50:00'),
+      ('edinaldoPereiraSilvahotmail.com','2024-02-23 13:50:00'),
+      ('uelington@fema.edu.br','2024-02-23 13:50:00'),
+      ('anaBananaSilva@hotmail.com','2024-02-23 13:50:00');
 
+insert into public.Pessoa (cpf, nome, data_Nascimento, id_Usuario) values
+                                                                  (42576980805, 'Yann Pereira Garcia','2002-05-21',1),
+                                                                  (12345678912, 'Samuel da Silva','2003-09-19',2),
+                                                                  (98765432198, 'Jose Correia','2004-02-7',3),
+                                                                  (65498732178, 'Xayeni da Silva', '2005-04-02',4),
+                                                                  (95184762384, 'Adanastor Edmar de Rosa','2006-08-29',5),
+                                                                  (26489517384, 'Ana Banana Silva','2007-001-01',6);
 insert into public.sitio (id_Pessoa, Endereco_Sitio, Nome_Do_Sitio, Tamanho_Do_Produtor) values
                         (1,'Rua Surubão da Serra','Sitio Aguas Rosas','G'),
                         (2,'Rua Macetador de Picões','Sitio Novo-Horizonte','M'),
