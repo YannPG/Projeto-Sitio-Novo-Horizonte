@@ -26,9 +26,10 @@ public class PessoaEntity {
 
     private String nome;
 
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "id_Usuario")
+    private EmailEntity email;
 
     @Column(name = "data_Nascimento")
     private LocalDate dataNascimento;
-
 }

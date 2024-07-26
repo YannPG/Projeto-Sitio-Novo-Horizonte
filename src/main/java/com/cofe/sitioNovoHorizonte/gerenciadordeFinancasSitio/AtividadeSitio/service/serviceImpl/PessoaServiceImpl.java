@@ -35,7 +35,6 @@ public class PessoaServiceImpl implements PessoaService {
         PessoaEntity pessoaCriada = new PessoaEntity();
 
         pessoaCriada.setNome(pessoaForm.getNome());
-        pessoaCriada.setEmail(pessoaForm.getEmail());
         pessoaCriada.setCpf(pessoaForm.getCpf());
         pessoaCriada.setDataNascimento(LocalDate.parse(pessoaForm.getDataNascimento()));
         this.pessoaRepository.save(pessoaCriada);
@@ -52,7 +51,6 @@ public class PessoaServiceImpl implements PessoaService {
         PessoaEntity pessoaCriada = new PessoaEntity();
         pessoaCriada.setId(id);
         pessoaCriada.setNome(pessoaForm.getNome());
-        pessoaCriada.setEmail(pessoaForm.getEmail());
         pessoaCriada.setCpf(pessoaForm.getCpf());
         pessoaCriada.setDataNascimento(LocalDate.parse(pessoaForm.getDataNascimento()));
         return pessoaCriada;

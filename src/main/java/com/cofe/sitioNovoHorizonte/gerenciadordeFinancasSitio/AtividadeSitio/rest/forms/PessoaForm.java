@@ -11,7 +11,7 @@ public class PessoaForm {
 
     private String nome;
 
-    private String email;
+    private Long idUsuario;
 
     private String dataNascimento;
 
